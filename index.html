@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Placement Predictor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container">
+<h2>AI Placement Predictor</h2>
+
+<input id="cgpa" placeholder="Enter CGPA"><br><br>
+<input id="internship" placeholder="Internship (0/1)"><br><br>
+<input id="project" placeholder="Project (0/1)"><br><br>
+<input id="technical" placeholder="Technical Course (0/1)"><br><br>
+<input id="communication" placeholder="Communication Level"><br><br>
+
+<button onclick="predict()">Predict Placement</button>
+
+<h3 id="result"></h3>
+<h3 id="suggestions"></h3>
+
+<script>
+
+function predict(){
+
+let data = {
+cgpa: parseFloat(document.getElementById("cgpa").value),
+internship: parseInt(document.getElementById("internship").value),
+project: parseInt(document.getElementById("project").value),
+technical: parseInt(document.getElementById("technical").value),
+communication: parseInt(document.getElementById("communication").value)
+}
+
+fetch("http://127.0.0.1:5000/predict",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(data)
+})
+.then(res=>res.json())
+.then(data=>{
+document.getElementById("result").innerHTML="Placement Chance: "+data["Placement Chance"];
+document.getElementById("suggestions").innerHTML="Suggestions: "+data["Suggestions"];
+})
+}
+
+</script>
+</div>
+</body>
+</html>
